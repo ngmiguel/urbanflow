@@ -1,0 +1,78 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle (if mixed)
+.gradle/
+build/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.factorypath
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.log
+hs_err_pid*
+replay_pid*
+
+# Spring Boot
+application-local.yml
+application-local.properties
+*.env
+.env
+.env.*
+
+# Secrets & credentials
+**/secrets/
+*.pem
+*.key
+*.p12
+*.jks
+
+# Test & coverage
+*.exec
+.jacoco/
+coverage/
+test-output/
+
+# Docker volumes (local)
+docker/data/
+
+# Kubernetes secrets (never commit)
+**/k8s/secrets/
+
+# Logs
+logs/
+*.log
+
+# Temporary
+tmp/
+temp/
+*.tmp
