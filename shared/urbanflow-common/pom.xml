@@ -15,4 +15,12 @@
     <name>UrbanFlow Common</name>
     <description>Shared utilities, exceptions and cross-cutting DTOs</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
 </project>
