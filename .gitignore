@@ -48,6 +48,7 @@ application-local.properties
 *.env
 .env
 .env.*
+!.env.example
 
 # Secrets & credentials
 **/secrets/
