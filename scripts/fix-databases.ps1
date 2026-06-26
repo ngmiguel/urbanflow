@@ -79,9 +79,16 @@ if ($digtialTwinExists -ne "1") {
     docker exec urbanflow-postgres psql -U urbanflow -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE digital_twin_db TO urbanflow;"
 }
 
+$analyticsExists = docker exec urbanflow-postgres psql -U urbanflow -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname = 'analytics_db';"
+if ($analyticsExists -ne "1") {
+    Write-Host "Creating analytics_db..." -ForegroundColor Yellow
+    docker exec urbanflow-postgres psql -U urbanflow -d postgres -c "CREATE DATABASE analytics_db;"
+    docker exec urbanflow-postgres psql -U urbanflow -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE analytics_db TO urbanflow;"
+}
+
 Write-Host "Databases OK. Restarting application services..." -ForegroundColor Green
 
 $Root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-docker compose -f (Join-Path $Root "infra\docker\docker-compose.yml") up -d auth-service api-gateway traffic-service iot-device-service incident-service alert-service environment-service notification-service websocket-service sensor-simulator digital-twin-service
+docker compose -f (Join-Path $Root "infra\docker\docker-compose.yml") up -d auth-service api-gateway traffic-service iot-device-service incident-service alert-service environment-service notification-service websocket-service sensor-simulator digital-twin-service analytics-service
 
 Write-Host "Done. Check status with: docker compose -f infra/docker/docker-compose.yml ps" -ForegroundColor Green

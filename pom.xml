@@ -33,6 +33,7 @@
         <module>services/websocket-service</module>
         <module>services/sensor-simulator</module>
         <module>services/digital-twin-service</module>
+        <module>services/analytics-service</module>
     </modules>
 
     <properties>

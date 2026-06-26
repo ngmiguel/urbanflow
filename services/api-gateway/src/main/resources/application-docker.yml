@@ -57,3 +57,7 @@ spring:
           uri: http://digital-twin-service:8091
           predicates:
             - Path=/api/v1/twin/**
+        - id: analytics-service
+          uri: http://analytics-service:8092
+          predicates:
+            - Path=/api/v1/analytics/**
