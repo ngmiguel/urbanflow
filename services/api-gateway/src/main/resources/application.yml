@@ -52,6 +52,14 @@ spring:
           uri: http://localhost:8086
           predicates:
             - Path=/api/v1/environment/**
+        - id: notification-service
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/v1/notifications/**
+        - id: websocket-service
+          uri: ws://localhost:8088
+          predicates:
+            - Path=/ws/**
 
 server:
   port: 8080

@@ -249,6 +249,58 @@ services:
     networks:
       - urbanflow-net
 
+  notification-service:
+    build:
+      context: ../..
+      dockerfile: services/notification-service/Dockerfile
+    container_name: urbanflow-notification-service
+    restart: unless-stopped
+    ports:
+      - "${NOTIFICATION_SERVICE_PORT:-8087}:8087"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8087/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+      - urbanflow-net
+
+  websocket-service:
+    build:
+      context: ../..
+      dockerfile: services/websocket-service/Dockerfile
+    container_name: urbanflow-websocket-service
+    restart: unless-stopped
+    ports:
+      - "${WEBSOCKET_SERVICE_PORT:-8088}:8088"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8088/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+      - urbanflow-net
+
 volumes:
   postgres_data:
     name: urbanflow-postgres-data
