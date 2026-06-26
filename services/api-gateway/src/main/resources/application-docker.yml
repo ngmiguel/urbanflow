@@ -37,3 +37,7 @@ spring:
           uri: http://alert-service:8085
           predicates:
             - Path=/api/v1/alerts/**
+        - id: environment-service
+          uri: http://environment-service:8086
+          predicates:
+            - Path=/api/v1/environment/**

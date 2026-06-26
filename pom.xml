@@ -28,6 +28,7 @@
         <module>services/iot-device-service</module>
         <module>services/incident-service</module>
         <module>services/alert-service</module>
+        <module>services/environment-service</module>
     </modules>
 
     <properties>
