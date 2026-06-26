@@ -1,13 +1,19 @@
-# Start UrbanFlow local infrastructure (PostgreSQL, Redis, Kafka)
-$ComposeFile = Join-Path $PSScriptRoot "..\infra\docker\docker-compose.yml"
+# Start the full UrbanFlow stack (infra + microservices)
+$Root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+$ComposeFile = Join-Path $Root "infra\docker\docker-compose.yml"
 
-Write-Host "Starting UrbanFlow infrastructure..." -ForegroundColor Cyan
-docker compose -f $ComposeFile up -d
+Write-Host "Building and starting UrbanFlow..." -ForegroundColor Cyan
+Set-Location $Root
+docker compose -f $ComposeFile up -d --build
 
 Write-Host ""
-Write-Host "Services:" -ForegroundColor Green
-Write-Host "  PostgreSQL  -> localhost:5432  (auth_db, traffic_db)"
-Write-Host "  Redis       -> localhost:6379"
-Write-Host "  Kafka       -> localhost:9092"
+Write-Host "UrbanFlow is starting:" -ForegroundColor Green
+Write-Host "  API Gateway   -> http://localhost:8080"
+Write-Host "  Auth Service  -> http://localhost:8081"
+Write-Host "  Traffic Svc   -> http://localhost:8082"
+Write-Host "  PostgreSQL    -> localhost:5432"
+Write-Host "  Redis         -> localhost:6379"
+Write-Host "  Kafka         -> localhost:9092"
 Write-Host ""
-Write-Host "Check status: docker compose -f infra/docker/docker-compose.yml ps"
+Write-Host "Swagger (auth)  -> http://localhost:8081/swagger-ui.html"
+Write-Host "Register via GW -> POST http://localhost:8080/api/v1/auth/register"
