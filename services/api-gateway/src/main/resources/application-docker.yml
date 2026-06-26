@@ -1,8 +1,27 @@
 spring:
+  data:
+    redis:
+      host: redis
+      port: 6379
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://auth-service:8081/api/v1/auth/jwks
+
   cloud:
     gateway:
       routes:
-        - id: auth-service
+        - id: auth-service-public
+          uri: http://auth-service:8081
+          predicates:
+            - Path=/api/v1/auth/register,/api/v1/auth/login,/api/v1/auth/refresh,/api/v1/auth/jwks
+        - id: auth-service-protected
           uri: http://auth-service:8081
           predicates:
             - Path=/api/v1/auth/**
+        - id: traffic-service
+          uri: http://traffic-service:8082
+          predicates:
+            - Path=/api/v1/traffic/**

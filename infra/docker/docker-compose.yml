@@ -16,8 +16,8 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-urbanflow} -d ${POSTGRES_DB:-postgres}"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 20s
+      retries: 10
+      start_period: 40s
     networks:
       - urbanflow-net
 
@@ -103,6 +103,8 @@ services:
       SPRING_PROFILES_ACTIVE: docker
     depends_on:
       auth-service:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]

@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    gateway:
+      default-filters: []
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/api/v1/auth/jwks
