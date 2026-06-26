@@ -381,6 +381,32 @@ services:
     networks:
       - urbanflow-net
 
+  event-service:
+    build:
+      context: ../..
+      dockerfile: services/event-service/Dockerfile
+    container_name: urbanflow-event-service
+    restart: unless-stopped
+    ports:
+      - "${EVENT_SERVICE_PORT:-8093}:8093"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8093/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 50s
+    networks:
+      - urbanflow-net
+
 volumes:
   postgres_data:
     name: urbanflow-postgres-data

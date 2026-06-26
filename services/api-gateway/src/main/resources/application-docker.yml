@@ -61,3 +61,7 @@ spring:
           uri: http://analytics-service:8092
           predicates:
             - Path=/api/v1/analytics/**
+        - id: event-service
+          uri: http://event-service:8093
+          predicates:
+            - Path=/api/v1/events/**

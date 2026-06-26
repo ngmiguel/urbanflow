@@ -8,3 +8,4 @@ CREATE DATABASE environment_db;
 CREATE DATABASE notification_db;
 CREATE DATABASE digital_twin_db;
 CREATE DATABASE analytics_db;
+CREATE DATABASE event_db;

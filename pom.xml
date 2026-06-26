@@ -34,6 +34,7 @@
         <module>services/sensor-simulator</module>
         <module>services/digital-twin-service</module>
         <module>services/analytics-service</module>
+        <module>services/event-service</module>
     </modules>
 
     <properties>
