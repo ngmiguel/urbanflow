@@ -25,6 +25,7 @@
         <module>services/api-gateway</module>
         <module>services/auth-service</module>
         <module>services/traffic-service</module>
+        <module>services/iot-device-service</module>
     </modules>
 
     <properties>

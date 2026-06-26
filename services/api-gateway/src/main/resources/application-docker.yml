@@ -25,3 +25,7 @@ spring:
           uri: http://traffic-service:8082
           predicates:
             - Path=/api/v1/traffic/**
+        - id: iot-device-service
+          uri: http://iot-device-service:8083
+          predicates:
+            - Path=/api/v1/devices/**

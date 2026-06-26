@@ -36,9 +36,16 @@ if ($trafficExists -ne "1") {
     docker exec urbanflow-postgres psql -U urbanflow -d traffic_db -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 }
 
+$iotExists = docker exec urbanflow-postgres psql -U urbanflow -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname = 'iot_db';"
+if ($iotExists -ne "1") {
+    Write-Host "Creating iot_db..." -ForegroundColor Yellow
+    docker exec urbanflow-postgres psql -U urbanflow -d postgres -c "CREATE DATABASE iot_db;"
+    docker exec urbanflow-postgres psql -U urbanflow -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE iot_db TO urbanflow;"
+}
+
 Write-Host "Databases OK. Restarting application services..." -ForegroundColor Green
 
 $Root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-docker compose -f (Join-Path $Root "infra\docker\docker-compose.yml") up -d auth-service api-gateway traffic-service
+docker compose -f (Join-Path $Root "infra\docker\docker-compose.yml") up -d auth-service api-gateway traffic-service iot-device-service
 
 Write-Host "Done. Check status with: docker compose -f infra/docker/docker-compose.yml ps" -ForegroundColor Green

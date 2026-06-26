@@ -125,8 +125,41 @@ services:
       - "${TRAFFIC_SERVICE_PORT:-8082}:8082"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8082/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+      - urbanflow-net
+
+  iot-device-service:
+    build:
+      context: ../..
+      dockerfile: services/iot-device-service/Dockerfile
+    container_name: urbanflow-iot-device-service
+    restart: unless-stopped
+    ports:
+      - "${IOT_DEVICE_SERVICE_PORT:-8083}:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8083/actuator/health || exit 1"]
       interval: 20s
       timeout: 5s
       retries: 5
