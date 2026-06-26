@@ -26,6 +26,7 @@
         <module>services/auth-service</module>
         <module>services/traffic-service</module>
         <module>services/iot-device-service</module>
+        <module>services/incident-service</module>
     </modules>
 
     <properties>

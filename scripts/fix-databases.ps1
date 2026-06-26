@@ -43,9 +43,17 @@ if ($iotExists -ne "1") {
     docker exec urbanflow-postgres psql -U urbanflow -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE iot_db TO urbanflow;"
 }
 
+$incidentExists = docker exec urbanflow-postgres psql -U urbanflow -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname = 'incident_db';"
+if ($incidentExists -ne "1") {
+    Write-Host "Creating incident_db..." -ForegroundColor Yellow
+    docker exec urbanflow-postgres psql -U urbanflow -d postgres -c "CREATE DATABASE incident_db;"
+    docker exec urbanflow-postgres psql -U urbanflow -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE incident_db TO urbanflow;"
+    docker exec urbanflow-postgres psql -U urbanflow -d incident_db -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+}
+
 Write-Host "Databases OK. Restarting application services..." -ForegroundColor Green
 
 $Root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-docker compose -f (Join-Path $Root "infra\docker\docker-compose.yml") up -d auth-service api-gateway traffic-service iot-device-service
+docker compose -f (Join-Path $Root "infra\docker\docker-compose.yml") up -d auth-service api-gateway traffic-service iot-device-service incident-service
 
 Write-Host "Done. Check status with: docker compose -f infra/docker/docker-compose.yml ps" -ForegroundColor Green
