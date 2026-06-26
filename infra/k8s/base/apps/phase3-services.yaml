@@ -1,0 +1,164 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sensor-simulator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sensor-simulator
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sensor-simulator
+    spec:
+      containers:
+        - name: sensor-simulator
+          image: ghcr.io/ngmiguel/urbanflow/sensor-simulator:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8090
+          envFrom:
+            - configMapRef:
+                name: urbanflow-common
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8090
+            initialDelaySeconds: 30
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sensor-simulator
+spec:
+  selector:
+    app.kubernetes.io/name: sensor-simulator
+  ports:
+    - port: 8090
+      targetPort: 8090
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: digital-twin-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: digital-twin-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: digital-twin-service
+    spec:
+      containers:
+        - name: digital-twin-service
+          image: ghcr.io/ngmiguel/urbanflow/digital-twin-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8091
+          envFrom:
+            - configMapRef:
+                name: urbanflow-common
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8091
+            initialDelaySeconds: 40
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: digital-twin-service
+spec:
+  selector:
+    app.kubernetes.io/name: digital-twin-service
+  ports:
+    - port: 8091
+      targetPort: 8091
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: analytics-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: analytics-service
+    spec:
+      containers:
+        - name: analytics-service
+          image: ghcr.io/ngmiguel/urbanflow/analytics-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8092
+          envFrom:
+            - configMapRef:
+                name: urbanflow-common
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8092
+            initialDelaySeconds: 40
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytics-service
+spec:
+  selector:
+    app.kubernetes.io/name: analytics-service
+  ports:
+    - port: 8092
+      targetPort: 8092
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: event-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: event-service
+    spec:
+      containers:
+        - name: event-service
+          image: ghcr.io/ngmiguel/urbanflow/event-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8093
+          envFrom:
+            - configMapRef:
+                name: urbanflow-common
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8093
+            initialDelaySeconds: 40
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-service
+spec:
+  selector:
+    app.kubernetes.io/name: event-service
+  ports:
+    - port: 8093
+      targetPort: 8093

@@ -68,6 +68,7 @@ docker/data/
 
 # Kubernetes secrets (never commit)
 **/k8s/secrets/
+infra/k8s/base/secret.yaml
 
 # Logs
 logs/

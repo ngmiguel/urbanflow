@@ -5,6 +5,7 @@
 [![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4-green?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Maven](https://img.shields.io/badge/Maven-multi--module-blue?logo=apachemaven&logoColor=white)](https://maven.apache.org/)
+[![CI](https://github.com/ngmiguel/urbanflow/actions/workflows/ci.yml/badge.svg)](https://github.com/ngmiguel/urbanflow/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 UrbanFlow est une plateforme microservices conçue pour une infrastructure smart city réelle : monitoring du trafic, capteurs IoT, incidents routiers, alertes intelligentes, capteurs environnementaux et notifications temps réel.
@@ -15,9 +16,9 @@ Le projet suit une approche **MVP-first** : un noyau fonctionnel, démoable et d
 
 | Phase | Périmètre | Statut |
 |-------|-----------|--------|
-| **Phase 1 — MVP** | Auth, Gateway, Traffic, Kafka, Docker Compose | En cours |
-| **Phase 2 — Core** | IoT, Incidents, Alerts, Environment, WebSocket | Planifié |
-| **Phase 3 — Advanced** | Digital Twin, Analytics, Simulator, K8s, CI/CD | Planifié |
+| **Phase 1 — MVP** | Auth, Gateway, Traffic, Kafka, Docker Compose | Terminé |
+| **Phase 2 — Core** | IoT, Incidents, Alerts, Environment, WebSocket | Terminé |
+| **Phase 3 — Advanced** | Digital Twin, Analytics, Simulator, Events, K8s, CI/CD | Terminé |
 
 ## Stack technique
 
@@ -97,24 +98,42 @@ urbanflow/
 
 ## Démarrage rapide
 
-> Disponible à partir de l'étape 5 (Docker Compose) et de l'étape 4 (auth-service).
+### Docker Compose (recommandé)
 
 ```bash
-# Cloner le projet
 git clone https://github.com/ngmiguel/urbanflow.git
 cd urbanflow
 
-# Lancer l'infrastructure locale (à venir)
-docker compose -f infra/docker/docker-compose.yml up -d
+# Windows — créer les bases si Postgres déjà démarré
+.\scripts\fix-databases.ps1
 
-# Builder le projet (à venir)
-mvn clean install
+# Lancer toute la stack (14 microservices + infra)
+docker compose -f infra/docker/docker-compose.yml up -d --build
+
+# API Gateway
+# http://localhost:8080
 ```
+
+### Build Maven
+
+```bash
+mvn clean verify
+```
+
+### Kubernetes (local)
+
+```powershell
+.\scripts\build-images.ps1
+.\scripts\deploy-k8s.ps1
+```
+
+Voir [infra/k8s/README.md](infra/k8s/README.md) pour le détail du déploiement K8s.
 
 ## Documentation
 
 - [Architecture complète](docs/ARCHITECTURE.md)
 - [ADR-001 — Décomposition microservices](docs/adr/ADR-001-microservices-decomposition.md)
+- [Déploiement Kubernetes](infra/k8s/README.md)
 
 ## Conventions
 

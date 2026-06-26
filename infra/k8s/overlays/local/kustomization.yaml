@@ -1,0 +1,55 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+images:
+  - name: ghcr.io/ngmiguel/urbanflow/auth-service
+    newName: urbanflow/auth-service
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/api-gateway
+    newName: urbanflow/api-gateway
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/traffic-service
+    newName: urbanflow/traffic-service
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/iot-device-service
+    newName: urbanflow/iot-device-service
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/incident-service
+    newName: urbanflow/incident-service
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/alert-service
+    newName: urbanflow/alert-service
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/environment-service
+    newName: urbanflow/environment-service
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/notification-service
+    newName: urbanflow/notification-service
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/websocket-service
+    newName: urbanflow/websocket-service
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/sensor-simulator
+    newName: urbanflow/sensor-simulator
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/digital-twin-service
+    newName: urbanflow/digital-twin-service
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/analytics-service
+    newName: urbanflow/analytics-service
+    newTag: local
+  - name: ghcr.io/ngmiguel/urbanflow/event-service
+    newName: urbanflow/event-service
+    newTag: local
+
+patches:
+  - target:
+      kind: Service
+      name: api-gateway
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: NodePort
