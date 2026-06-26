@@ -49,3 +49,7 @@ spring:
           uri: ws://websocket-service:8088
           predicates:
             - Path=/ws/**
+        - id: sensor-simulator
+          uri: http://sensor-simulator:8090
+          predicates:
+            - Path=/api/v1/simulator/**

@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: sensor-simulator
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/api/v1/auth/jwks
+
+server:
+  port: 8090
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+urbanflow:
+  simulator:
+    tick-interval-ms: 5000
+    default-duration-seconds: 120
+    default-zone-id: zone-casa-centre
+    default-latitude: 33.5731
+    default-longitude: -7.5898
+
+logging:
+  level:
+    com.urbanflow.simulator: INFO

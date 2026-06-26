@@ -31,6 +31,7 @@
         <module>services/environment-service</module>
         <module>services/notification-service</module>
         <module>services/websocket-service</module>
+        <module>services/sensor-simulator</module>
     </modules>
 
     <properties>

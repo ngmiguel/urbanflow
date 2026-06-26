@@ -301,6 +301,30 @@ services:
     networks:
       - urbanflow-net
 
+  sensor-simulator:
+    build:
+      context: ../..
+      dockerfile: services/sensor-simulator/Dockerfile
+    container_name: urbanflow-sensor-simulator
+    restart: unless-stopped
+    ports:
+      - "${SENSOR_SIMULATOR_PORT:-8090}:8090"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      kafka:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8090/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+      - urbanflow-net
+
 volumes:
   postgres_data:
     name: urbanflow-postgres-data

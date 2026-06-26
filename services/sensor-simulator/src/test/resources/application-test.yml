@@ -1,0 +1,8 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+
+urbanflow:
+  simulator:
+    tick-interval-ms: 100
+    default-duration-seconds: 30
