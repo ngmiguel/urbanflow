@@ -53,6 +53,7 @@ application-local.properties
 # Secrets & credentials
 **/secrets/
 *.pem
+!**/src/test/resources/**/*.pem
 *.key
 *.p12
 *.jks
