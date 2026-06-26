@@ -27,6 +27,7 @@
         <module>services/traffic-service</module>
         <module>services/iot-device-service</module>
         <module>services/incident-service</module>
+        <module>services/alert-service</module>
     </modules>
 
     <properties>

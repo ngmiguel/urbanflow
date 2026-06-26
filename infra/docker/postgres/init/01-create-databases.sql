@@ -3,3 +3,4 @@ CREATE DATABASE auth_db;
 CREATE DATABASE traffic_db;
 CREATE DATABASE iot_db;
 CREATE DATABASE incident_db;
+CREATE DATABASE alert_db;

@@ -51,9 +51,16 @@ if ($incidentExists -ne "1") {
     docker exec urbanflow-postgres psql -U urbanflow -d incident_db -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 }
 
+$alertExists = docker exec urbanflow-postgres psql -U urbanflow -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname = 'alert_db';"
+if ($alertExists -ne "1") {
+    Write-Host "Creating alert_db..." -ForegroundColor Yellow
+    docker exec urbanflow-postgres psql -U urbanflow -d postgres -c "CREATE DATABASE alert_db;"
+    docker exec urbanflow-postgres psql -U urbanflow -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE alert_db TO urbanflow;"
+}
+
 Write-Host "Databases OK. Restarting application services..." -ForegroundColor Green
 
 $Root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-docker compose -f (Join-Path $Root "infra\docker\docker-compose.yml") up -d auth-service api-gateway traffic-service iot-device-service incident-service
+docker compose -f (Join-Path $Root "infra\docker\docker-compose.yml") up -d auth-service api-gateway traffic-service iot-device-service incident-service alert-service
 
 Write-Host "Done. Check status with: docker compose -f infra/docker/docker-compose.yml ps" -ForegroundColor Green

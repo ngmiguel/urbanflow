@@ -33,3 +33,7 @@ spring:
           uri: http://incident-service:8084
           predicates:
             - Path=/api/v1/incidents/**
+        - id: alert-service
+          uri: http://alert-service:8085
+          predicates:
+            - Path=/api/v1/alerts/**
