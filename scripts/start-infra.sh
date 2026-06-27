@@ -5,6 +5,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 COMPOSE_FILE="${ROOT_DIR}/infra/docker/docker-compose.yml"
 
+echo "Checking JWT signing keys..."
+bash "${SCRIPT_DIR}/ensure-jwt-keys.sh"
+
 echo "Building and starting UrbanFlow..."
 cd "${ROOT_DIR}"
 docker compose -f "${COMPOSE_FILE}" up -d --build

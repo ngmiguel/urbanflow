@@ -28,9 +28,29 @@ public class AppConfig {
 
     @Bean
     KeyPair jwtKeyPair(JwtProperties jwtProperties, ResourceLoader resourceLoader) throws Exception {
-        RSAPrivateKey privateKey = loadPrivateKey(resourceLoader.getResource(jwtProperties.getPrivateKey()));
-        RSAPublicKey publicKey = loadPublicKey(resourceLoader.getResource(jwtProperties.getPublicKey()));
+        Resource privateKeyResource = resourceLoader.getResource(jwtProperties.getPrivateKey());
+        Resource publicKeyResource = resourceLoader.getResource(jwtProperties.getPublicKey());
+
+        assertKeyResourceExists(privateKeyResource, "private");
+        assertKeyResourceExists(publicKeyResource, "public");
+
+        RSAPrivateKey privateKey = loadPrivateKey(privateKeyResource);
+        RSAPublicKey publicKey = loadPublicKey(publicKeyResource);
         return new KeyPair(publicKey, privateKey);
+    }
+
+    private void assertKeyResourceExists(Resource resource, String keyType) {
+        if (resource.exists()) {
+            return;
+        }
+
+        throw new IllegalStateException("""
+                JWT %s key not found at '%s'.
+                Generate a unique key pair for this environment:
+                  Windows:  .\\scripts\\generate-jwt-keys.ps1
+                  Linux:    ./scripts/generate-jwt-keys.sh
+                See docs/JWT-KEYS.md for Docker and Kubernetes injection.
+                """.formatted(keyType, resource.getDescription()).trim());
     }
 
     private RSAPrivateKey loadPrivateKey(Resource resource) throws Exception {

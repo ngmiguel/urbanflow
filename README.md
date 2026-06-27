@@ -96,6 +96,15 @@ urbanflow/
 - Docker & Docker Compose
 - Git
 
+## Configuration initiale
+
+```powershell
+# Génère les clés JWT locales + installe les hooks Git
+.\scripts\setup-dev.ps1
+```
+
+Voir [docs/JWT-KEYS.md](docs/JWT-KEYS.md) pour le modèle de sécurité JWT (dev / Docker / K8s / prod).
+
 ## Démarrage rapide
 
 ### Docker Compose (recommandé)
@@ -104,11 +113,15 @@ urbanflow/
 git clone https://github.com/ngmiguel/urbanflow.git
 cd urbanflow
 
+# Première fois — clés JWT + hooks
+.\scripts\setup-dev.ps1
+
 # Windows — créer les bases si Postgres déjà démarré
 .\scripts\fix-databases.ps1
 
 # Lancer toute la stack (14 microservices + infra)
 docker compose -f infra/docker/docker-compose.yml up -d --build
+# ou: .\scripts\start-infra.ps1
 
 # API Gateway
 # http://localhost:8080
@@ -132,6 +145,7 @@ Voir [infra/k8s/README.md](infra/k8s/README.md) pour le détail du déploiement 
 ## Documentation
 
 - [Architecture complète](docs/ARCHITECTURE.md)
+- [Clés JWT — génération et déploiement](docs/JWT-KEYS.md)
 - [ADR-001 — Décomposition microservices](docs/adr/ADR-001-microservices-decomposition.md)
 - [Déploiement Kubernetes](infra/k8s/README.md)
 

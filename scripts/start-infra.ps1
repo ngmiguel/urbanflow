@@ -1,6 +1,9 @@
 # Start the full UrbanFlow stack (infra + microservices)
-$Root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+$Root = Split-Path $PSScriptRoot -Parent
 $ComposeFile = Join-Path $Root "infra\docker\docker-compose.yml"
+
+Write-Host "Checking JWT signing keys..." -ForegroundColor Cyan
+& (Join-Path $PSScriptRoot "ensure-jwt-keys.ps1")
 
 Write-Host "Building and starting UrbanFlow..." -ForegroundColor Cyan
 Set-Location $Root

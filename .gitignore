@@ -51,7 +51,8 @@ application-local.properties
 !.env.example
 
 # Secrets & credentials
-**/secrets/
+secrets/jwt/*.pem
+services/auth-service/src/main/resources/jwt/
 *.pem
 !**/src/test/resources/**/*.pem
 *.key

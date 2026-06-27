@@ -10,6 +10,9 @@ if (-not (Test-Path $secretPath)) {
     Copy-Item (Join-Path $Root "infra\k8s\base\secret.example.yaml") $secretPath
 }
 
+Write-Host "Applying JWT signing keys secret..." -ForegroundColor Cyan
+& (Join-Path $PSScriptRoot "apply-k8s-jwt-secret.ps1")
+
 Write-Host "Applying Kubernetes manifests..." -ForegroundColor Cyan
 kubectl apply -f $secretPath
 kubectl apply -k infra/k8s/overlays/local
