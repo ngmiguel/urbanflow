@@ -102,3 +102,47 @@ urbanflow:
       allowed-headers:
         - "*"
       allow-credentials: true
+  openapi:
+    services:
+      - name: auth-service
+        display-name: Auth
+        base-uri: http://localhost:8081
+      - name: traffic-service
+        display-name: Traffic
+        base-uri: http://localhost:8082
+      - name: iot-device-service
+        display-name: IoT Devices
+        base-uri: http://localhost:8083
+      - name: incident-service
+        display-name: Incidents
+        base-uri: http://localhost:8084
+      - name: alert-service
+        display-name: Alerts
+        base-uri: http://localhost:8085
+      - name: environment-service
+        display-name: Environment
+        base-uri: http://localhost:8086
+      - name: notification-service
+        display-name: Notifications
+        base-uri: http://localhost:8087
+      - name: sensor-simulator
+        display-name: Sensor Simulator
+        base-uri: http://localhost:8090
+      - name: digital-twin-service
+        display-name: Digital Twin
+        base-uri: http://localhost:8091
+      - name: analytics-service
+        display-name: Analytics
+        base-uri: http://localhost:8092
+      - name: event-service
+        display-name: Urban Events
+        base-uri: http://localhost:8093
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /v3/api-docs/urbanflow
+    operations-sorter: method
+    tags-sorter: alpha

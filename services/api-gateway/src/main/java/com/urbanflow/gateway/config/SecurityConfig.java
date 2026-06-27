@@ -24,7 +24,11 @@ public class SecurityConfig {
                                 "/api/v1/auth/register",
                                 "/api/v1/auth/login",
                                 "/api/v1/auth/refresh",
-                                "/api/v1/auth/jwks"
+                                "/api/v1/auth/jwks",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/webjars/**",
+                                "/v3/api-docs/**"
                         ).permitAll()
                         .anyExchange().authenticated()
                 )

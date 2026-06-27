@@ -18,3 +18,4 @@ Copy-Item -Path $sourceHook -Destination $targetHook -Force
 
 Write-Host "Installed prepare-commit-msg hook at $targetHook"
 Write-Host "Cursor Co-authored-by trailers will be stripped from future commits."
+Write-Host "Also disable Cursor commit attribution: Settings > Agents > Attribution > Commit Attribution"

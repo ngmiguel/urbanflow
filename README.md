@@ -125,6 +125,9 @@ docker compose -f infra/docker/docker-compose.yml up -d --build
 
 # API Gateway
 # http://localhost:8080
+
+# Unified Swagger (all microservices)
+# http://localhost:8080/swagger-ui.html
 ```
 
 ### Build Maven
@@ -145,6 +148,7 @@ Voir [infra/k8s/README.md](infra/k8s/README.md) pour le détail du déploiement 
 ## Documentation
 
 - [Architecture complète](docs/ARCHITECTURE.md)
+- [API Swagger unifiée (toutes les routes)](docs/API-SWAGGER.md)
 - [Clés JWT — génération et déploiement](docs/JWT-KEYS.md)
 - [ADR-001 — Décomposition microservices](docs/adr/ADR-001-microservices-decomposition.md)
 - [Déploiement Kubernetes](infra/k8s/README.md)

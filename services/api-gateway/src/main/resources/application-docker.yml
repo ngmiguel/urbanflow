@@ -65,3 +65,40 @@ spring:
           uri: http://event-service:8093
           predicates:
             - Path=/api/v1/events/**
+
+urbanflow:
+  openapi:
+    services:
+      - name: auth-service
+        display-name: Auth
+        base-uri: http://auth-service:8081
+      - name: traffic-service
+        display-name: Traffic
+        base-uri: http://traffic-service:8082
+      - name: iot-device-service
+        display-name: IoT Devices
+        base-uri: http://iot-device-service:8083
+      - name: incident-service
+        display-name: Incidents
+        base-uri: http://incident-service:8084
+      - name: alert-service
+        display-name: Alerts
+        base-uri: http://alert-service:8085
+      - name: environment-service
+        display-name: Environment
+        base-uri: http://environment-service:8086
+      - name: notification-service
+        display-name: Notifications
+        base-uri: http://notification-service:8087
+      - name: sensor-simulator
+        display-name: Sensor Simulator
+        base-uri: http://sensor-simulator:8090
+      - name: digital-twin-service
+        display-name: Digital Twin
+        base-uri: http://digital-twin-service:8091
+      - name: analytics-service
+        display-name: Analytics
+        base-uri: http://analytics-service:8092
+      - name: event-service
+        display-name: Urban Events
+        base-uri: http://event-service:8093
