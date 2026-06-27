@@ -14,9 +14,14 @@ path = sys.argv[1]
 with open(path, "r", encoding="utf-8") as handle:
     lines = handle.readlines()
 
+blocked = (
+    "co-authored-by: cursor",
+    "cursoragent@cursor.com",
+)
+
 filtered = [
     line for line in lines
-    if "co-authored-by: cursor" not in line.lower()
+    if not any(token in line.lower() for token in blocked)
 ]
 
 with open(path, "w", encoding="utf-8") as handle:
@@ -24,6 +29,6 @@ with open(path, "w", encoding="utf-8") as handle:
 PY
 else
   tmp="${COMMIT_MSG_FILE}.tmp"
-  grep -vi "co-authored-by: cursor" "$COMMIT_MSG_FILE" > "$tmp" || true
+  grep -viE "co-authored-by: cursor|cursoragent@cursor\.com" "$COMMIT_MSG_FILE" > "$tmp" || true
   mv "$tmp" "$COMMIT_MSG_FILE"
 fi

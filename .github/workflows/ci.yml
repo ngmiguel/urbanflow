@@ -15,6 +15,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  commit-policy:
+    name: Reject Cursor co-author trailers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan commits for Cursor attribution
+        run: |
+          RANGE="${{ github.event_name == 'pull_request' && format('origin/{0}..HEAD', github.base_ref) || 'HEAD~20..HEAD' }}"
+          if git log $RANGE --format=%B | grep -qiE 'co-authored-by:[[:space:]]*cursor|cursoragent@cursor\.com'; then
+            echo "Commit message contains Cursor co-author attribution."
+            echo "Disable Cursor Settings > Agents > Attribution > Commit Attribution."
+            exit 1
+          fi
+
   module-tests:
     name: Tests — ${{ matrix.module }}
     runs-on: ubuntu-latest

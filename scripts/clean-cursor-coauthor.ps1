@@ -1,5 +1,6 @@
 param(
-    [string]$Branch
+    [string]$Branch,
+    [switch]$AllRefs
 )
 
 $ErrorActionPreference = "Stop"
@@ -8,27 +9,17 @@ if (-not (git rev-parse --git-dir 2>$null)) {
     throw "Not a git repository."
 }
 
-if (-not $Branch) {
-    $Branch = git rev-parse --abbrev-ref HEAD
-}
+$target = if ($AllRefs) { "-- --all" } elseif ($Branch) { $Branch } else { (git rev-parse --abbrev-ref HEAD) }
 
-Write-Host "Rewriting commit messages on branch: $Branch" -ForegroundColor Cyan
+Write-Host "Rewriting commit messages on: $target" -ForegroundColor Cyan
+Write-Host "Removing Co-authored-by: Cursor and cursoragent@cursor.com trailers." -ForegroundColor Cyan
 
-$filterScript = @'
-import sys
-lines = sys.stdin.readlines()
-filtered = [line for line in lines if "co-authored-by: cursor" not in line.lower()]
-sys.stdout.writelines(filtered)
-'@
-
-$filterFile = Join-Path $env:TEMP "urbanflow-msg-filter.py"
-Set-Content -Path $filterFile -Value $filterScript -Encoding utf8
-
-git filter-branch -f --msg-filter "python `"$filterFile`"" $Branch
+$env:FILTER_BRANCH_SQUELCH_WARNING = "1"
+git filter-branch -f --msg-filter "grep -viE 'co-authored-by: cursor|cursoragent@cursor.com' || true" $target
 
 Write-Host ""
 Write-Host "Done. Verify with:" -ForegroundColor Green
-Write-Host "  git log --format=%B | Select-String -Pattern cursor -CaseSensitive:`$false"
+Write-Host "  git log --all --format=%B | Select-String -Pattern 'Co-authored-by|cursoragent' -CaseSensitive:`$false"
 Write-Host ""
-Write-Host "If this branch was already pushed, update remote with:" -ForegroundColor Yellow
-Write-Host "  git push --force-with-lease origin $Branch"
+Write-Host "Then update GitHub with:" -ForegroundColor Yellow
+Write-Host "  .\scripts\push-clean-history.ps1"
